@@ -31,10 +31,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
 
     on<LoginInit>((event, emit) {
+      emit(state.copyWith(loading: true));
       emit(
         state.copyWith(
           loginSuccess: _getLogInStatusUseCase.execute(),
-          loading: true,
+          loading: false,
         ),
       );
     });
