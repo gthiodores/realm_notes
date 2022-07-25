@@ -18,4 +18,5 @@ const AppBarTheme kAppBarTheme = AppBarTheme(
   color: Colors.white,
   elevation: 0,
   actionsIconTheme: IconThemeData(color: Colors.black),
+  iconTheme: IconThemeData(color: Colors.black),
 );
