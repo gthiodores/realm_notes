@@ -54,7 +54,7 @@ class User extends _User with RealmEntity, RealmObject {
 
 class Notes extends _Notes with RealmEntity, RealmObject {
   Notes(
-    String id,
+    ObjectId id,
     String title,
     String content, {
     int? color,
@@ -70,9 +70,9 @@ class Notes extends _Notes with RealmEntity, RealmObject {
   Notes._();
 
   @override
-  String get id => RealmObject.get<String>(this, '_id') as String;
+  ObjectId get id => RealmObject.get<ObjectId>(this, '_id') as ObjectId;
   @override
-  set id(String value) => throw RealmUnsupportedSetError();
+  set id(ObjectId value) => throw RealmUnsupportedSetError();
 
   @override
   String get title => RealmObject.get<String>(this, 'title') as String;
@@ -103,7 +103,7 @@ class Notes extends _Notes with RealmEntity, RealmObject {
   static SchemaObject _initSchema() {
     RealmObject.registerFactory(Notes._);
     return const SchemaObject(Notes, 'Notes', [
-      SchemaProperty('_id', RealmPropertyType.string,
+      SchemaProperty('_id', RealmPropertyType.objectid,
           mapTo: '_id', primaryKey: true),
       SchemaProperty('title', RealmPropertyType.string),
       SchemaProperty('content', RealmPropertyType.string),

@@ -18,7 +18,7 @@ class _User {
 class _Notes {
   @PrimaryKey()
   @MapTo("_id")
-  late String id;
+  late ObjectId id;
 
   late String title;
 
