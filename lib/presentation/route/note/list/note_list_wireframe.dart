@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class NoteListWireframe extends StatelessWidget {
   final VoidCallback? onProfileTap;
   final VoidCallback? onSearchTap;
+  final VoidCallback? onLayoutTap;
   final bool isGridLayout;
   final Widget Function(BuildContext context, int index) itemBuilder;
   final int itemCount;
@@ -11,6 +12,7 @@ class NoteListWireframe extends StatelessWidget {
     Key? key,
     this.onProfileTap,
     this.onSearchTap,
+    this.onLayoutTap,
     this.isGridLayout = false,
     required this.itemBuilder,
     required this.itemCount,
@@ -22,6 +24,12 @@ class NoteListWireframe extends StatelessWidget {
       child: CustomScrollView(
         slivers: [
           SliverAppBar(
+            leading: IconButton(
+              onPressed: onLayoutTap,
+              splashRadius: 24,
+              iconSize: 24,
+              icon: Icon(isGridLayout ? Icons.list : Icons.grid_view_rounded),
+            ),
             title: const Text('Notes'),
             titleTextStyle: Theme.of(context).textTheme.headline6?.copyWith(
                   color: Colors.black,

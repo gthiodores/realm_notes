@@ -8,3 +8,8 @@ class NoteListInit extends NoteListEvent {
   @override
   List<Object?> get props => [];
 }
+
+class NoteListChangeLayout extends NoteListEvent {
+  @override
+  List<Object?> get props => [];
+}

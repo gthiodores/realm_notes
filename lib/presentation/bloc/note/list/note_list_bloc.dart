@@ -31,5 +31,10 @@ class NoteListBloc extends Bloc<NoteListEvent, NoteListState> {
       },
       transformer: restartable(),
     );
+
+    on<NoteListChangeLayout>(
+      (event, emit) => emit(state.copyWith(grid: !state.grid)),
+      transformer: droppable(),
+    );
   }
 }

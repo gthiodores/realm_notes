@@ -49,7 +49,9 @@ class NoteListRoute extends StatelessWidget {
                 );
               },
               itemCount: state.notes.length + 1,
-              isGridLayout: false,
+              isGridLayout: state.grid,
+              onLayoutTap: () =>
+                  context.read<NoteListBloc>().add(NoteListChangeLayout()),
               onProfileTap: () => print('profile'),
               onSearchTap: () => print('search'),
             );
