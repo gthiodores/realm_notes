@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:realm/realm.dart';
 import 'package:realm_notes/data/realm_container.dart';
 import 'package:realm_notes/data/repository/notes_repository.dart';
+import 'package:realm_notes/domain/add_note_use_case.dart';
 import 'package:realm_notes/domain/get_log_in_status_use_case.dart';
 import 'package:realm_notes/domain/log_in_with_email_use_case.dart';
 import 'package:realm_notes/domain/log_out_use_case.dart';
@@ -36,4 +37,7 @@ void injectDependencies() {
 
   // Note list use case
   injector.registerFactory(() => WatchNotesUseCase(injector.get()));
+
+  // Note edit use case
+  injector.registerFactory(() => AddNoteUseCase(repository: injector.get()));
 }
