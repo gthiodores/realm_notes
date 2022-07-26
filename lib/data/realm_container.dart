@@ -61,6 +61,6 @@ class RealmContainer {
     _realm = null;
 
     // log out
-    await app.currentUser?.logOut();
+    await app.removeUser(app.currentUser!);
   }
 }
