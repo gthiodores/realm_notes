@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class NoteEditWireframe extends StatelessWidget {
   final VoidCallback? onCloseTap;
   final VoidCallback? onSaveTap;
+  final Color color;
   final Widget title;
   final Widget titleTextField;
   final Widget contentTextField;
@@ -11,6 +12,7 @@ class NoteEditWireframe extends StatelessWidget {
     Key? key,
     this.onCloseTap,
     this.onSaveTap,
+    required this.color,
     required this.title,
     required this.titleTextField,
     required this.contentTextField,
@@ -40,6 +42,7 @@ class NoteEditWireframe extends StatelessWidget {
               icon: const Icon(Icons.save_alt_rounded),
             ),
           ],
+          backgroundColor: color,
         ),
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
