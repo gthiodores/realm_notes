@@ -20,3 +20,15 @@ const AppBarTheme kAppBarTheme = AppBarTheme(
   actionsIconTheme: IconThemeData(color: Colors.black),
   iconTheme: IconThemeData(color: Colors.black),
 );
+
+final ElevatedButtonThemeData kElevatedButtonTheme = ElevatedButtonThemeData(
+  style: ElevatedButton.styleFrom(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+  ),
+);
+
+final TextButtonThemeData kTextButtonTheme = TextButtonThemeData(
+  style: TextButton.styleFrom(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+  ),
+);

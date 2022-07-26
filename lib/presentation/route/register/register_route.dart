@@ -100,9 +100,6 @@ class RegisterRoute extends StatelessWidget {
                     context.read<RegisterBloc>().add(RegisterActionTapped()),
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 42),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
                 ),
                 child: const Text('Register'),
               ),

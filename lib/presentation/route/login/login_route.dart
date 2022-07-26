@@ -36,7 +36,15 @@ class LoginRoute extends StatelessWidget {
         builder: (context, state) => Scaffold(
           backgroundColor: Colors.white,
           body: state.loading
-              ? const Center(child: CircularProgressIndicator())
+              ? Stack(
+                  children: const [
+                    Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                )
               : CredentialsInputWireframe(
                   title: Text(
                     'Login',
@@ -75,14 +83,15 @@ class LoginRoute extends StatelessWidget {
                         context.read<LoginBloc>().add(LoginClicked()),
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 42),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
                     ),
                     child: const Text('Login'),
                   ),
                   forgotPassword: TextButton(
-                    onPressed: () {},
+                    onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Feature not supported yet'),
+                      ),
+                    ),
                     child: const Text('Forgot Password?'),
                   ),
                 ),

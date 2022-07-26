@@ -28,6 +28,8 @@ class MyApp extends StatelessWidget {
         appBarTheme: kAppBarTheme,
         scaffoldBackgroundColor: Colors.white,
         textTheme: GoogleFonts.aBeeZeeTextTheme(),
+        elevatedButtonTheme: kElevatedButtonTheme,
+        textButtonTheme: kTextButtonTheme,
       ),
       debugShowCheckedModeBanner: false,
       home: const LoginRoute(),
@@ -79,7 +81,7 @@ class MyApp extends StatelessWidget {
                 const offsetEnd = Offset(0, 0);
 
                 final tween =
-                Tween(begin: offsetStart, end: offsetEnd).chain(curveTween);
+                    Tween(begin: offsetStart, end: offsetEnd).chain(curveTween);
                 final transition = animation.drive(tween);
 
                 return SlideTransition(position: transition, child: child);
