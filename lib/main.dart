@@ -5,6 +5,7 @@ import 'package:realm_notes/injector.dart';
 import 'package:realm_notes/presentation/route/login/login_route.dart';
 import 'package:realm_notes/presentation/route/note/edit/note_edit_route.dart';
 import 'package:realm_notes/presentation/route/note/list/note_list_route.dart';
+import 'package:realm_notes/presentation/route/profile/profile_route.dart';
 import 'package:realm_notes/presentation/theme/theme.dart';
 
 import 'presentation/route/register/register_route.dart';
@@ -78,6 +79,22 @@ class MyApp extends StatelessWidget {
                 final curveTween = CurveTween(curve: Curves.ease);
 
                 const offsetStart = Offset(0, 1);
+                const offsetEnd = Offset(0, 0);
+
+                final tween =
+                    Tween(begin: offsetStart, end: offsetEnd).chain(curveTween);
+                final transition = animation.drive(tween);
+
+                return SlideTransition(position: transition, child: child);
+              },
+            );
+          case ProfileRoute.route:
+            return PageRouteBuilder(
+              pageBuilder: (context, anim, secondary) => const ProfileRoute(),
+              transitionsBuilder: (context, animation, secondary, child) {
+                final curveTween = CurveTween(curve: Curves.ease);
+
+                const offsetStart = Offset(1, 0);
                 const offsetEnd = Offset(0, 0);
 
                 final tween =
