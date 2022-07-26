@@ -29,6 +29,7 @@ class NoteListWireframe extends StatelessWidget {
               splashRadius: 24,
               iconSize: 24,
               icon: Icon(isGridLayout ? Icons.list : Icons.grid_view_rounded),
+              tooltip: 'Change layout',
             ),
             title: const Text('Notes'),
             titleTextStyle: Theme.of(context).textTheme.headline6?.copyWith(
@@ -41,16 +42,18 @@ class NoteListWireframe extends StatelessWidget {
                 splashRadius: 24,
                 iconSize: 24,
                 icon: const Icon(Icons.person),
+                tooltip: 'User profile',
               ),
               IconButton(
                 onPressed: onSearchTap,
                 splashRadius: 24,
                 icon: const Icon(Icons.search),
+                tooltip: 'Search note',
               ),
             ],
-            snap: true,
+            elevation: 4,
+            pinned: true,
             floating: true,
-            forceElevated: true,
           ),
           if (isGridLayout) ...[
             SliverGrid(

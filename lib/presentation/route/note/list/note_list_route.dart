@@ -5,6 +5,7 @@ import 'package:realm_notes/presentation/bloc/note/list/note_list_bloc.dart';
 import 'package:realm_notes/presentation/route/note/detail/note_detail_route.dart';
 import 'package:realm_notes/presentation/route/note/edit/note_edit_route.dart';
 import 'package:realm_notes/presentation/route/note/list/note_list_wireframe.dart';
+import 'package:realm_notes/presentation/route/profile/profile_route.dart';
 import 'package:realm_notes/presentation/widget/note_list_item.dart';
 
 class NoteListRoute extends StatelessWidget {
@@ -20,7 +21,15 @@ class NoteListRoute extends StatelessWidget {
       child: Scaffold(
         body: BlocConsumer<NoteListBloc, NoteListState>(
           listener: (context, state) {
-            print('State has changed: $state');
+            if (state.deleted != null) {
+              // TODO: Show snack bar with undo action
+            }
+
+            if (state.message != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message!)),
+              );
+            }
           },
           builder: (context, state) {
             if (state.loading) {
@@ -46,13 +55,17 @@ class NoteListRoute extends StatelessWidget {
                     NoteDetailRoute.route,
                     arguments: state.notes[index],
                   ),
+                  maxLines: state.grid ? 6 : 4,
                 );
               },
               itemCount: state.notes.length + 1,
               isGridLayout: state.grid,
               onLayoutTap: () =>
                   context.read<NoteListBloc>().add(NoteListChangeLayout()),
-              onProfileTap: () => print('profile'),
+              onProfileTap: () => Navigator.pushNamed(
+                context,
+                ProfileRoute.route,
+              ),
               onSearchTap: () => print('search'),
             );
           },
@@ -68,6 +81,7 @@ class NoteListRoute extends StatelessWidget {
             }
           }),
           backgroundColor: Colors.black,
+          tooltip: 'Add note',
           child: const Icon(Icons.add),
         ),
       ),
