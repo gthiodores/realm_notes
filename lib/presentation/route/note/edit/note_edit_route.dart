@@ -8,7 +8,7 @@ import 'package:realm_notes/presentation/util/note_colour.dart';
 import 'package:realm_notes/presentation/widget/note_colour_item.dart';
 
 // TODO: WIP EDIT FUNCTIONALITY!
-class NoteEditRoute extends StatelessWidget {
+class NoteEditRoute extends StatefulWidget {
   static const String route = '/edit';
 
   final Notes? note;
@@ -16,9 +16,22 @@ class NoteEditRoute extends StatelessWidget {
   const NoteEditRoute({Key? key, this.note}) : super(key: key);
 
   @override
+  State<NoteEditRoute> createState() => _NoteEditRouteState();
+}
+
+class _NoteEditRouteState extends State<NoteEditRoute> {
+  final FocusNode contentFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    contentFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NoteEditBloc(injector.get(), note: note),
+      create: (context) => NoteEditBloc(injector.get(), note: widget.note),
       child: BlocConsumer<NoteEditBloc, NoteEditState>(
         listener: (context, state) {
           if (state.shouldNavigateBack) Navigator.pop(context);
@@ -67,12 +80,12 @@ class NoteEditRoute extends StatelessWidget {
               backgroundColor: color,
               body: NoteEditWireframe(
                 color: color,
-                title: Text(note == null ? 'Add note' : 'Edit note'),
+                title: Text(widget.note == null ? 'Add note' : 'Edit note'),
                 onCloseTap: () => Navigator.maybePop(context),
                 onSaveTap: () =>
                     context.read<NoteEditBloc>().add(NoteEditConfirm()),
                 titleTextField: TextFormField(
-                  initialValue: note?.title,
+                  initialValue: widget.note?.title,
                   onChanged: (title) => context
                       .read<NoteEditBloc>()
                       .add(NoteEditTitle(title: title)),
@@ -83,15 +96,26 @@ class NoteEditRoute extends StatelessWidget {
                   ),
                 ),
                 contentTextField: TextFormField(
-                  initialValue: note?.content,
+                  initialValue: widget.note?.content,
+                  focusNode: contentFocusNode,
                   onChanged: (content) => context
                       .read<NoteEditBloc>()
                       .add(NoteEditContent(content: content)),
                   decoration: const InputDecoration(
-                    hintText: 'Insert notes here',
+                    hintText: 'Insert note content here',
                     border: UnderlineInputBorder(borderSide: BorderSide.none),
                   ),
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
                 ),
+                onSpaceTap: () {
+                  if (contentFocusNode.hasFocus) {
+                    contentFocusNode.unfocus();
+                    return;
+                  }
+
+                  contentFocusNode.requestFocus();
+                },
               ),
               bottomNavigationBar: BottomAppBar(
                 color: Colors.black,
@@ -99,9 +123,18 @@ class NoteEditRoute extends StatelessWidget {
                   height: 48 + 16,
                   child: Row(
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Icon(
+                          Icons.color_lens,
+                          size: 36,
+                          color: color,
+                        ),
+                      ),
                       NoteColourItem(
                         backgroundColor: Colors.white,
                         selected: state.currentColour == null,
+                        tooltip: 'white',
                         onTap: () => context
                             .read<NoteEditBloc>()
                             .add(const NoteEditColour()),
@@ -109,6 +142,7 @@ class NoteEditRoute extends StatelessWidget {
                       ...NoteColour.values
                           .map((colour) => NoteColourItem(
                                 backgroundColor: colour.color,
+                                tooltip: colour.name,
                                 selected: state.currentColour == colour,
                                 onTap: () => context
                                     .read<NoteEditBloc>()
