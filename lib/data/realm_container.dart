@@ -42,13 +42,14 @@ class RealmContainer {
   Future<void> addSubscription(
     RealmResults query, {
     required String name,
+    bool update = false,
   }) async {
     getRealmInstance().subscriptions.update((mutableSubscriptions) {
-      if (mutableSubscriptions.any((element) => element.name == name)) {
+      if (mutableSubscriptions.any((it) => it.name == name) && !update) {
         return;
       }
 
-      mutableSubscriptions.add(query, name: name);
+      mutableSubscriptions.add(query, name: name, update: update);
     });
     await getRealmInstance().subscriptions.waitForSynchronization();
   }
