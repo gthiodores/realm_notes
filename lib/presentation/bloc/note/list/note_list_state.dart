@@ -24,7 +24,7 @@ class NoteListState extends Equatable {
   }) =>
       NoteListState(
         notes: notes ?? this.notes,
-        grid: grid ?? false,
+        grid: grid ?? this.grid,
         loading: loading ?? this.loading,
         deleted: deleted,
         message: message,
