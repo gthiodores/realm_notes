@@ -40,7 +40,7 @@ class NotesRepository extends INotesRepository {
     throwIf(userId == null, Exception('Unauthorized access'));
 
     final realm = _realmContainer.getRealmInstance();
-    final query = realm.all<model.Notes>();
+    final query = realm.query<model.Notes>('holder = "$userId"');
     final userQuery = realm.query<model.User>('_id = "$userId"');
 
     await _realmContainer.addSubscription(query, name: 'all-notes');
@@ -87,7 +87,7 @@ class NotesRepository extends INotesRepository {
     throwIf(userId == null, Exception('Unauthorized access'));
 
     final realm = _realmContainer.getRealmInstance();
-    final query = realm.all<model.Notes>();
+    final query = realm.query<model.Notes>('_holder = "$userId"');
 
     await _realmContainer.addSubscription(query, name: 'all-notes');
 
