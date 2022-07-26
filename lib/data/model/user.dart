@@ -26,5 +26,5 @@ class _Notes {
 
   late int? color;
 
-  late _User? holder;
+  late String holder;
 }

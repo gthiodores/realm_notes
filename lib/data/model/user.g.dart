@@ -56,9 +56,9 @@ class Notes extends _Notes with RealmEntity, RealmObject {
   Notes(
     ObjectId id,
     String title,
-    String content, {
+    String content,
+    String holder, {
     int? color,
-    User? holder,
   }) {
     RealmObject.set(this, '_id', id);
     RealmObject.set(this, 'title', title);
@@ -90,9 +90,9 @@ class Notes extends _Notes with RealmEntity, RealmObject {
   set color(int? value) => RealmObject.set(this, 'color', value);
 
   @override
-  User? get holder => RealmObject.get<User>(this, 'holder') as User?;
+  String get holder => RealmObject.get<String>(this, 'holder') as String;
   @override
-  set holder(covariant User? value) => RealmObject.set(this, 'holder', value);
+  set holder(String value) => RealmObject.set(this, 'holder', value);
 
   @override
   Stream<RealmObjectChanges<Notes>> get changes =>
@@ -108,8 +108,7 @@ class Notes extends _Notes with RealmEntity, RealmObject {
       SchemaProperty('title', RealmPropertyType.string),
       SchemaProperty('content', RealmPropertyType.string),
       SchemaProperty('color', RealmPropertyType.int, optional: true),
-      SchemaProperty('holder', RealmPropertyType.object,
-          optional: true, linkTarget: 'User'),
+      SchemaProperty('holder', RealmPropertyType.string),
     ]);
   }
 }
