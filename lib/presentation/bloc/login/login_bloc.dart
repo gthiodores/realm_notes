@@ -32,10 +32,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     on<LoginInit>((event, emit) {
       emit(state.copyWith(loading: true));
+
+      final loginState = _getLogInStatusUseCase.execute();
+
       emit(
         state.copyWith(
-          loginSuccess: _getLogInStatusUseCase.execute(),
-          loading: false,
+          loginSuccess: loginState,
+          loading: loginState,
         ),
       );
     });
@@ -66,7 +69,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           emit(state.copyWith(message: 'User tersebut belum terdaftar'));
           return;
         }
-        emit(state.copyWith(loginSuccess: true));
+        emit(state.copyWith(loginSuccess: true, loading: true));
       },
       transformer: droppable(),
     );

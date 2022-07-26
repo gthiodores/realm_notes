@@ -36,15 +36,7 @@ class LoginRoute extends StatelessWidget {
         builder: (context, state) => Scaffold(
           backgroundColor: Colors.white,
           body: state.loading
-              ? Stack(
-                  children: const [
-                    Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                )
+              ? const Center(child: CircularProgressIndicator())
               : CredentialsInputWireframe(
                   title: Text(
                     'Login',
@@ -96,7 +88,7 @@ class LoginRoute extends StatelessWidget {
                   ),
                 ),
           bottomNavigationBar: state.loading
-              ? Container()
+              ? const SizedBox(height: 0, width: 0)
               : RegisterBottomBar(
                   onRegisterTap: () async {
                     await Navigator.pushNamed(context, RegisterRoute.route)
