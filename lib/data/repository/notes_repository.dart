@@ -11,7 +11,7 @@ abstract class INotesRepository {
   Future<void> addNotes({
     required String title,
     required String content,
-    required int color,
+    int? color,
   });
 
   Future<void> removeNote();
@@ -33,7 +33,7 @@ class NotesRepository extends INotesRepository {
   Future<void> addNotes({
     required String title,
     required String content,
-    required int color,
+    int? color,
   }) async {
     final userId = _realmContainer.app.currentUser?.id;
 
@@ -41,22 +41,20 @@ class NotesRepository extends INotesRepository {
 
     final realm = _realmContainer.getRealmInstance();
     final query = realm.all<model.Notes>();
-    final userQuery = realm.query<model.User>('id = "$userId"');
+    final userQuery = realm.query<model.User>('_id = "$userId"');
 
     await _realmContainer.addSubscription(query, name: 'all-notes');
     await _realmContainer.addSubscription(userQuery, name: 'current-user');
 
-    realm.write(
-      () => realm.add(
-        model.Notes(
-          ObjectId(),
-          title,
-          content,
-          color: color,
-          holder: userQuery.single,
-        ),
-      ),
+    final note = model.Notes(
+      ObjectId(),
+      title,
+      content,
+      color: color,
+      holder: userQuery.single,
     );
+
+    return realm.write(() => realm.add(note));
   }
 
   @override
