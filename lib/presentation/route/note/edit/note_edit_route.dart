@@ -99,9 +99,41 @@ class _NoteEditRouteState extends State<NoteEditRoute> {
                       secondaryActionButton: widget.note == null
                           ? null
                           : IconButton(
-                              onPressed: () => context
-                                  .read<NoteEditBloc>()
-                                  .add(NoteEditDelete()),
+                              onPressed: () async => await showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  title: Text(
+                                    'Delete note?',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        ?.copyWith(fontWeight: FontWeight.w700),
+                                  ),
+                                  content: const Text(
+                                    'This note will be gone forever, are you sure?',
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('No'),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, true),
+                                      child: const Text('Yes'),
+                                    ),
+                                  ],
+                                ),
+                              ).then((value) {
+                                if (value == true) {
+                                  context
+                                      .read<NoteEditBloc>()
+                                      .add(NoteEditDelete());
+                                }
+                              }),
                               splashRadius: 24,
                               icon: const Icon(Icons.delete_outline_rounded),
                               tooltip: 'Delete',
