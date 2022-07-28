@@ -49,11 +49,11 @@ class NoteListRoute extends StatelessWidget {
                 }
 
                 return NoteListItem(
-                  note: state.notes[index],
+                  note: state.notes[index].toNotes(),
                   onTap: () => Navigator.pushNamed(
                     context,
                     NoteEditRoute.route,
-                    arguments: state.notes[index],
+                    arguments: state.notes[index].toNotes(),
                   ),
                   maxLines: state.grid ? 6 : 4,
                 );

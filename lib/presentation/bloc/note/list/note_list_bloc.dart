@@ -2,6 +2,7 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realm_notes/data/model/user.dart';
+import 'package:realm_notes/domain/model/domain_note.dart';
 import 'package:realm_notes/domain/watch_notes_use_case.dart';
 
 part 'note_list_event.dart';
@@ -23,13 +24,13 @@ class NoteListBloc extends Bloc<NoteListEvent, NoteListState> {
 
         return emit.forEach(
           _watchNotes.execute(),
-          onData: (List<Notes> notes) => state.copyWith(
-            notes: notes,
-            loading: false,
-          ),
+          onData: (List<Notes> notes) {
+            final domainNotes =
+                notes.map((e) => DomainNote.fromNotes(e)).toList();
+            return state.copyWith(notes: domainNotes, loading: false);
+          },
         );
       },
-      transformer: restartable(),
     );
 
     on<NoteListChangeLayout>(
