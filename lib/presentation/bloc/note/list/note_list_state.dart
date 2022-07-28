@@ -3,7 +3,7 @@ part of 'note_list_bloc.dart';
 class NoteListState extends Equatable {
   final bool grid;
   final bool loading;
-  final List<Notes> notes;
+  final List<DomainNote> notes;
   final Notes? deleted;
   final String? message;
 
@@ -18,7 +18,7 @@ class NoteListState extends Equatable {
   NoteListState copyWith({
     bool? grid,
     bool? loading,
-    List<Notes>? notes,
+    List<DomainNote>? notes,
     Notes? deleted,
     String? message,
   }) =>
