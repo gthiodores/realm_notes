@@ -2,22 +2,24 @@ import 'package:flutter/material.dart';
 
 class NoteEditWireframe extends StatelessWidget {
   final VoidCallback? onCloseTap;
-  final VoidCallback? onSaveTap;
   final VoidCallback? onSpaceTap;
   final Color color;
   final Widget title;
   final Widget titleTextField;
   final Widget contentTextField;
+  final Widget primaryActionButton;
+  final Widget? secondaryActionButton;
 
   const NoteEditWireframe({
     Key? key,
     this.onCloseTap,
-    this.onSaveTap,
     this.onSpaceTap,
     required this.color,
     required this.title,
     required this.titleTextField,
     required this.contentTextField,
+    required this.primaryActionButton,
+    this.secondaryActionButton,
   }) : super(key: key);
 
   @override
@@ -40,11 +42,8 @@ class NoteEditWireframe extends StatelessWidget {
           snap: true,
           floating: true,
           actions: [
-            IconButton(
-              onPressed: onSaveTap,
-              splashRadius: 24,
-              icon: const Icon(Icons.save_alt_rounded),
-            ),
+            secondaryActionButton ?? Container(),
+            primaryActionButton,
           ],
           backgroundColor: color,
         ),

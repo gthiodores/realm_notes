@@ -82,8 +82,12 @@ class _NoteEditRouteState extends State<NoteEditRoute> {
                 color: color,
                 title: Text(widget.note == null ? 'Add note' : 'Edit note'),
                 onCloseTap: () => Navigator.maybePop(context),
-                onSaveTap: () =>
-                    context.read<NoteEditBloc>().add(NoteEditConfirm()),
+                primaryActionButton: IconButton(
+                  onPressed: () =>
+                      context.read<NoteEditBloc>().add(NoteEditConfirm()),
+                  splashRadius: 24,
+                  icon: const Icon(Icons.save_alt_rounded),
+                ),
                 titleTextField: TextFormField(
                   initialValue: widget.note?.title,
                   onChanged: (title) => context
