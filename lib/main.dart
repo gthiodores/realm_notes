@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:realm_notes/data/model/user.dart';
 import 'package:realm_notes/injector.dart';
 import 'package:realm_notes/presentation/route/login/login_route.dart';
+import 'package:realm_notes/presentation/route/note/detail/note_detail_route.dart';
 import 'package:realm_notes/presentation/route/note/edit/note_edit_route.dart';
 import 'package:realm_notes/presentation/route/note/list/note_list_route.dart';
+import 'package:realm_notes/presentation/route/note/search/note_search_route.dart';
 import 'package:realm_notes/presentation/route/profile/profile_route.dart';
 import 'package:realm_notes/presentation/theme/theme.dart';
 
@@ -74,7 +77,9 @@ class MyApp extends StatelessWidget {
             );
           case NoteEditRoute.route:
             return PageRouteBuilder(
-              pageBuilder: (context, anim, secondary) => const NoteEditRoute(),
+              pageBuilder: (context, anim, secondary) => NoteEditRoute(
+                note: setting.arguments as Notes?,
+              ),
               transitionsBuilder: (context, animation, secondary, child) {
                 final curveTween = CurveTween(curve: Curves.ease);
 
@@ -88,6 +93,24 @@ class MyApp extends StatelessWidget {
                 return SlideTransition(position: transition, child: child);
               },
             );
+          case NoteDetailRoute.route:
+            return PageRouteBuilder(
+              pageBuilder: (context, anim, sec) => const NoteDetailRoute(),
+              transitionsBuilder: (context, animation, secondary, child) {
+                final curveTween = CurveTween(curve: Curves.ease);
+
+                const offsetStart = Offset(0, 1);
+                const offsetEnd = Offset(0, 0);
+
+                final tween =
+                    Tween(begin: offsetStart, end: offsetEnd).chain(curveTween);
+                final transition = animation.drive(tween);
+
+                return SlideTransition(position: transition, child: child);
+              },
+            );
+          case NoteSearchRoute.route:
+            return MaterialPageRoute(builder: (ctx) => const NoteSearchRoute());
           case ProfileRoute.route:
             return PageRouteBuilder(
               pageBuilder: (context, anim, secondary) => const ProfileRoute(),
@@ -106,7 +129,10 @@ class MyApp extends StatelessWidget {
             );
           default:
             return MaterialPageRoute(
-              builder: (context) => const Center(child: Text('Unknown Route')),
+              builder: (context) => Scaffold(
+                appBar: AppBar(),
+                body: const Center(child: Text('Illegal Route')),
+              ),
             );
         }
       },
