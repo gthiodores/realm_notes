@@ -7,6 +7,7 @@ import 'package:realm_notes/domain/get_log_in_status_use_case.dart';
 import 'package:realm_notes/domain/log_in_with_email_use_case.dart';
 import 'package:realm_notes/domain/log_out_use_case.dart';
 import 'package:realm_notes/domain/register_user_use_case.dart';
+import 'package:realm_notes/domain/search_note_use_case.dart';
 import 'package:realm_notes/domain/validate_email.dart';
 import 'package:realm_notes/domain/validate_password.dart';
 import 'package:realm_notes/domain/watch_notes_use_case.dart';
@@ -40,4 +41,7 @@ void injectDependencies() {
 
   // Note edit use case
   injector.registerFactory(() => AddNoteUseCase(repository: injector.get()));
+
+  // Note search use case
+  injector.registerFactory(() => SearchNoteUseCase(injector.get()));
 }
