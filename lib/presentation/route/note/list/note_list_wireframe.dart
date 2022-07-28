@@ -47,8 +47,11 @@ class NoteListWireframe extends StatelessWidget {
               IconButton(
                 onPressed: onSearchTap,
                 splashRadius: 24,
-                icon: const Icon(Icons.search),
-                tooltip: 'Search note',
+                icon: const Hero(
+                  tag: 'search_icon',
+                  child: Icon(Icons.search),
+                ),
+                tooltip: 'Search notes',
               ),
             ],
             elevation: 4,

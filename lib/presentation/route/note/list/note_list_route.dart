@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realm_notes/injector.dart';
 import 'package:realm_notes/presentation/bloc/note/list/note_list_bloc.dart';
-import 'package:realm_notes/presentation/route/note/detail/note_detail_route.dart';
 import 'package:realm_notes/presentation/route/note/edit/note_edit_route.dart';
 import 'package:realm_notes/presentation/route/note/list/note_list_wireframe.dart';
+import 'package:realm_notes/presentation/route/note/search/note_search_route.dart';
 import 'package:realm_notes/presentation/route/profile/profile_route.dart';
 import 'package:realm_notes/presentation/widget/note_list_item.dart';
 
@@ -52,7 +52,7 @@ class NoteListRoute extends StatelessWidget {
                   note: state.notes[index],
                   onTap: () => Navigator.pushNamed(
                     context,
-                    NoteDetailRoute.route,
+                    NoteEditRoute.route,
                     arguments: state.notes[index],
                   ),
                   maxLines: state.grid ? 6 : 4,
@@ -66,7 +66,10 @@ class NoteListRoute extends StatelessWidget {
                 context,
                 ProfileRoute.route,
               ),
-              onSearchTap: () => print('search'),
+              onSearchTap: () => Navigator.pushNamed(
+                context,
+                NoteSearchRoute.route,
+              ),
             );
           },
         ),
