@@ -41,6 +41,7 @@ dependencies:
   equatable: ^2.0.3
   bloc_concurrency: ^0.2.0
   google_fonts: ^3.0.1
+  rxdart: ^0.27.5
 
 dev_dependencies:
   flutter_test:
