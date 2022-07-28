@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:realm/realm.dart';
 
 part 'user.g.dart';

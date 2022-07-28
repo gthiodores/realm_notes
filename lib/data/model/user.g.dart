@@ -52,7 +52,7 @@ class User extends _User with RealmEntity, RealmObject {
   }
 }
 
-class Notes extends _Notes with RealmEntity, RealmObject {
+class Notes extends _Notes with RealmEntity, RealmObject, EquatableMixin {
   Notes(
     ObjectId id,
     String title,
@@ -111,4 +111,7 @@ class Notes extends _Notes with RealmEntity, RealmObject {
       SchemaProperty('holder', RealmPropertyType.string),
     ]);
   }
+
+  @override
+  List<Object?> get props => [id, title, content, holder, color];
 }
