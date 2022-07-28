@@ -14,13 +14,13 @@ abstract class INotesRepository {
     int? color,
   });
 
-  Future<void> removeNote();
+  Future<void> removeNote({required model.Notes toDelete});
 
   Future<void> updateNote({
     required model.Notes originalNote,
     required String title,
     required String content,
-    required int color,
+    required int? color,
   });
 }
 
@@ -58,9 +58,19 @@ class NotesRepository extends INotesRepository {
   }
 
   @override
-  Future<void> removeNote() {
-    // TODO: implement removeNote
-    throw UnimplementedError();
+  Future<void> removeNote({required model.Notes toDelete}) async {
+    final userId = _realmContainer.app.currentUser?.id;
+
+    throwIf(userId == null, Exception('Unauthorized access'));
+
+    final realm = _realmContainer.getRealmInstance();
+    final query = realm.all<model.Notes>();
+    final userQuery = realm.all<model.User>();
+
+    await _realmContainer.addSubscription(query, name: 'notes');
+    await _realmContainer.addSubscription(userQuery, name: 'user');
+
+    return realm.write(() => realm.delete(toDelete));
   }
 
   @override
@@ -88,10 +98,27 @@ class NotesRepository extends INotesRepository {
     required model.Notes originalNote,
     required String title,
     required String content,
-    required int color,
-  }) {
-    // TODO: implement updateNote
-    throw UnimplementedError();
+    required int? color,
+  }) async {
+    final userId = _realmContainer.app.currentUser?.id;
+
+    throwIf(userId == null, Exception('Unauthorized access'));
+
+    final realm = _realmContainer.getRealmInstance();
+    final query =
+        realm.query<model.Notes>('_id = oid(${originalNote.id.toString()})');
+    final userQuery = realm.all<model.User>();
+
+    await _realmContainer.addSubscription(query, name: 'current-note');
+    await _realmContainer.addSubscription(userQuery, name: 'user');
+
+    final note = query.single;
+
+    return realm.write(() {
+      note.title = title;
+      note.content = content;
+      note.color = color;
+    });
   }
 
   @override
