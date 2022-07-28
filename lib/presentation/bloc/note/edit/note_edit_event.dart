@@ -35,3 +35,8 @@ class NoteEditConfirm extends NoteEditEvent {
   @override
   List<Object?> get props => [];
 }
+
+class NoteEditDelete extends NoteEditEvent {
+  @override
+  List<Object?> get props => [];
+}

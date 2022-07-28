@@ -5,6 +5,7 @@ class NoteEditState extends Equatable {
   final NoteColour? currentColour;
   final String title;
   final String content;
+  final bool loading;
   final bool hasChanged;
   final bool shouldNavigateBack;
 
@@ -13,6 +14,7 @@ class NoteEditState extends Equatable {
     required this.content,
     this.note,
     this.currentColour,
+    this.loading = false,
     this.shouldNavigateBack = false,
     this.hasChanged = false,
   });
@@ -22,6 +24,7 @@ class NoteEditState extends Equatable {
             note?.color == null ? null : NoteColour.values[note!.color!],
         shouldNavigateBack = false,
         hasChanged = false,
+        loading = false,
         title = note?.title ?? '',
         content = note?.content ?? '';
 
@@ -30,6 +33,7 @@ class NoteEditState extends Equatable {
     NoteColour? currentColour,
     String? title,
     String? content,
+    bool? loading,
     bool? shouldNavigateBack,
     bool? hasChanged,
   }) =>
@@ -39,6 +43,7 @@ class NoteEditState extends Equatable {
         currentColour: currentColour ?? this.currentColour,
         shouldNavigateBack: shouldNavigateBack ?? false,
         note: note,
+        loading: loading ?? false,
         hasChanged: hasChanged ?? this.hasChanged,
       );
 
@@ -49,6 +54,7 @@ class NoteEditState extends Equatable {
         note: note,
         currentColour: null,
         hasChanged: hasChanged,
+        loading: false,
       );
 
   @override
@@ -59,5 +65,6 @@ class NoteEditState extends Equatable {
         currentColour,
         shouldNavigateBack,
         hasChanged,
+        loading,
       ];
 }

@@ -7,7 +7,6 @@ import 'package:realm_notes/presentation/route/note/edit/note_edit_wireframe.dar
 import 'package:realm_notes/presentation/util/note_colour.dart';
 import 'package:realm_notes/presentation/widget/note_colour_item.dart';
 
-// TODO: WIP EDIT FUNCTIONALITY!
 class NoteEditRoute extends StatefulWidget {
   static const String route = '/edit';
 
@@ -31,7 +30,12 @@ class _NoteEditRouteState extends State<NoteEditRoute> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NoteEditBloc(injector.get(), note: widget.note),
+      create: (context) => NoteEditBloc(
+        injector.get(),
+        injector.get(),
+        injector.get(),
+        note: widget.note,
+      ),
       child: BlocConsumer<NoteEditBloc, NoteEditState>(
         listener: (context, state) {
           if (state.shouldNavigateBack) Navigator.pop(context);
@@ -78,49 +82,65 @@ class _NoteEditRouteState extends State<NoteEditRoute> {
             },
             child: Scaffold(
               backgroundColor: color,
-              body: NoteEditWireframe(
-                color: color,
-                title: Text(widget.note == null ? 'Add note' : 'Edit note'),
-                onCloseTap: () => Navigator.maybePop(context),
-                primaryActionButton: IconButton(
-                  onPressed: () =>
-                      context.read<NoteEditBloc>().add(NoteEditConfirm()),
-                  splashRadius: 24,
-                  icon: const Icon(Icons.save_alt_rounded),
-                ),
-                titleTextField: TextFormField(
-                  initialValue: widget.note?.title,
-                  onChanged: (title) => context
-                      .read<NoteEditBloc>()
-                      .add(NoteEditTitle(title: title)),
-                  style: Theme.of(context).textTheme.headline6,
-                  decoration: const InputDecoration(
-                    hintText: 'Title',
-                    border: UnderlineInputBorder(borderSide: BorderSide.none),
-                  ),
-                ),
-                contentTextField: TextFormField(
-                  initialValue: widget.note?.content,
-                  focusNode: contentFocusNode,
-                  onChanged: (content) => context
-                      .read<NoteEditBloc>()
-                      .add(NoteEditContent(content: content)),
-                  decoration: const InputDecoration(
-                    hintText: 'Insert note content here',
-                    border: UnderlineInputBorder(borderSide: BorderSide.none),
-                  ),
-                  maxLines: null,
-                  keyboardType: TextInputType.multiline,
-                ),
-                onSpaceTap: () {
-                  if (contentFocusNode.hasFocus) {
-                    contentFocusNode.unfocus();
-                    return;
-                  }
+              body: state.loading
+                  ? const Center(child: CircularProgressIndicator())
+                  : NoteEditWireframe(
+                      color: color,
+                      title:
+                          Text(widget.note == null ? 'Add note' : 'Edit note'),
+                      onCloseTap: () => Navigator.maybePop(context),
+                      primaryActionButton: IconButton(
+                        onPressed: () =>
+                            context.read<NoteEditBloc>().add(NoteEditConfirm()),
+                        splashRadius: 24,
+                        icon: const Icon(Icons.save_alt_rounded),
+                        tooltip: 'Save',
+                      ),
+                      secondaryActionButton: widget.note == null
+                          ? null
+                          : IconButton(
+                              onPressed: () => context
+                                  .read<NoteEditBloc>()
+                                  .add(NoteEditDelete()),
+                              splashRadius: 24,
+                              icon: const Icon(Icons.delete_outline_rounded),
+                              tooltip: 'Delete',
+                            ),
+                      titleTextField: TextFormField(
+                        initialValue: widget.note?.title,
+                        onChanged: (title) => context
+                            .read<NoteEditBloc>()
+                            .add(NoteEditTitle(title: title)),
+                        style: Theme.of(context).textTheme.headline6,
+                        decoration: const InputDecoration(
+                          hintText: 'Title',
+                          border:
+                              UnderlineInputBorder(borderSide: BorderSide.none),
+                        ),
+                      ),
+                      contentTextField: TextFormField(
+                        initialValue: widget.note?.content,
+                        focusNode: contentFocusNode,
+                        onChanged: (content) => context
+                            .read<NoteEditBloc>()
+                            .add(NoteEditContent(content: content)),
+                        decoration: const InputDecoration(
+                          hintText: 'Insert note content here',
+                          border:
+                              UnderlineInputBorder(borderSide: BorderSide.none),
+                        ),
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
+                      ),
+                      onSpaceTap: () {
+                        if (contentFocusNode.hasFocus) {
+                          contentFocusNode.unfocus();
+                          return;
+                        }
 
-                  contentFocusNode.requestFocus();
-                },
-              ),
+                        contentFocusNode.requestFocus();
+                      },
+                    ),
               bottomNavigationBar: BottomAppBar(
                 color: Colors.black,
                 child: SizedBox(
