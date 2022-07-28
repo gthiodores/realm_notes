@@ -64,9 +64,23 @@ class NotesRepository extends INotesRepository {
   }
 
   @override
-  Future<List<model.Notes>> searchNotes({required String title}) {
-    // TODO: implement searchNotes
-    throw UnimplementedError();
+  Future<List<model.Notes>> searchNotes({required String title}) async {
+    final userId = _realmContainer.app.currentUser?.id;
+
+    throwIf(userId == null, Exception('Unauthorized access'));
+
+    final realm = _realmContainer.getRealmInstance();
+    final query = realm.query<model.Notes>('title CONTAINS[c] "$title"');
+    final userQuery = realm.all<model.User>();
+
+    await _realmContainer.addSubscription(
+      query,
+      name: 'search-notes',
+      update: true,
+    );
+    await _realmContainer.addSubscription(userQuery, name: 'user');
+
+    return query.toList();
   }
 
   @override
